@@ -1,8 +1,7 @@
 package com.example.gym.util;
 
 public enum UserRole {
-    ROLE_ADMIN,
+    ADMIN,
     USER,
-    ROLE_CUSTOMER,
-    PREMIUM_USER
+    TRAINER
 }

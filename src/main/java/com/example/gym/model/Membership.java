@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -22,7 +20,7 @@ public class Membership {
 
     @OneToOne
     @JoinColumn(name = "user_id" , referencedColumnName = "id")
-    private User user;
+    private AdminLogin user;
 
     @Temporal(TemporalType.DATE)
     private Date paymentDate;
