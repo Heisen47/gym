@@ -4,60 +4,25 @@ import com.example.gym.dto.UserCreateDTO;
 import com.example.gym.dto.UserDTO;
 import com.example.gym.exception.EmailAlreadyExistsException;
 import com.example.gym.exception.ResourceNotFoundException;
-import com.example.gym.model.User;
+import com.example.gym.model.AdminLogin;
 import com.example.gym.repository.MembershipRepo;
-import com.example.gym.repository.UserRepository;
+import com.example.gym.repository.AdminLoginRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 public class UserService {
-    private final UserRepository userRepository;
-    private final MembershipRepo membershipRepo;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository,
-                       MembershipRepo membershipRepo,
-                       ModelMapper modelMapper) {
-        this.userRepository = userRepository;
-        this.membershipRepo = membershipRepo;
-        this.modelMapper = modelMapper;
-    }
+    private AdminLoginRepo adminLoginRepo;
 
-
-    public UserDTO createUser(UserCreateDTO userCreateDTO){
-
-        if(userRepository.existsByEmail(userCreateDTO.getEmail())){
-            throw new EmailAlreadyExistsException("Email already registered");
+    public boolean verifyUser(String email, String password) {
+        AdminLogin admin = adminLoginRepo.findByEmail(email);
+        if (admin != null && admin.getPassword().equals(password)) {
+            return true; // User is verified
         }
-
-        User user = modelMapper.map(userCreateDTO , User.class);
-        User savedUser = userRepository.save(user);
-        return modelMapper.map(savedUser , UserDTO.class);
-    }
-
-    public UserDTO getUserByEmail(String email){
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        return modelMapper.map(user, UserDTO.class);
-    }
-
-    public UserDTO updateUser(Long id , UserDTO userDTO){
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        if(!existingUser.getEmail().equals(userDTO.getEmail()) &&
-                userRepository.existsByEmail(userDTO.getEmail())){
-            throw new EmailAlreadyExistsException("Email already taken");
-        }
-
-        modelMapper.map(userDTO , existingUser);
-        User updatedUser = userRepository.save(existingUser);
-        return modelMapper.map(updatedUser , UserDTO.class);
+        return false; // Invalid credentials
     }
 }
