@@ -9,11 +9,11 @@ public class UserLoginRequest {
     private String password;
 
     // Getters and setters
-    public String getUsername() {
+    public String getEmail() {
         return email;
     }
 
-    public void setUsername(String username) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
