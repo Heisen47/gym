@@ -4,9 +4,7 @@ import com.example.gym.model.User;
 import com.example.gym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +22,11 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/addUser")
+    public ResponseEntity<User> addUser(@RequestBody User user){
+        User newUser = userService.addUser(user);
+        return ResponseEntity.ok(newUser);
     }
 }

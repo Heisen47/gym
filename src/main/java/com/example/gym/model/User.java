@@ -3,6 +3,7 @@ package com.example.gym.model;
 import com.example.gym.util.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Data
