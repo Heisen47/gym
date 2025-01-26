@@ -1,6 +1,5 @@
 package com.example.gym.dto;
 
-import com.example.gym.model.Membership;
 import com.example.gym.util.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;

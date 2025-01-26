@@ -1,7 +1,5 @@
 package com.example.gym.dto;
 
-import com.example.gym.model.AdminLogin;
-import com.example.gym.repository.AdminLoginRepo;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserLoginRequest {
