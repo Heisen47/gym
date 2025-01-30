@@ -2,6 +2,7 @@ package com.example.gym.controller;
 
 import com.example.gym.model.User;
 import com.example.gym.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public ResponseEntity<User> addUser(@RequestBody User user){
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user){
         User newUser = userService.addUser(user);
         return ResponseEntity.ok(newUser);
     }
