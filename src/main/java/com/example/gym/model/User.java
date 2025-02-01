@@ -23,4 +23,7 @@ public class User {
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number should be 10 digits")
     private String phoneNumber;
     private Boolean membership;
+
+    @Lob
+    private byte[] image;
 }
