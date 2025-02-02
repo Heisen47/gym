@@ -22,11 +22,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    //All users-----------------------------------------------------------------------------------------------
+
     @GetMapping("/customers")
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
+    //create user ----------------------------------------------------------------------------------------
 
     @PostMapping(value = "/addUser" , consumes = {"multipart/form-data"})
     public ResponseEntity<User> addUser( @RequestParam("name") String name,
@@ -56,6 +60,9 @@ public class UserController {
         User newUser = userService.addUser(user);
         return ResponseEntity.ok(newUser);
     }
+
+//    single user----------------------------------------------------------------------------------------------
+
     @GetMapping("/customers/{id}")
     public ResponseEntity<User> getSingleUser(@PathVariable Long id){
         return userService.getSingleUser(id)

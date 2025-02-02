@@ -27,5 +27,6 @@ public class User {
     private Boolean membership;
 
     @Lob
+    @NotBlank(message = "Image is mandatory")
     private byte[] image;
 }
