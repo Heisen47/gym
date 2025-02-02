@@ -56,4 +56,11 @@ public class UserController {
         User newUser = userService.addUser(user);
         return ResponseEntity.ok(newUser);
     }
+    @GetMapping("/customers/{id}")
+    public ResponseEntity<User> getSingleUser(@PathVariable Long id){
+        return userService.getSingleUser(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
