@@ -1,6 +1,5 @@
 package com.example.gym.service;
 
-
 import com.example.gym.model.Payment;
 import com.example.gym.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +19,9 @@ public class PaymentService {
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
+
+    public List<Payment> getPaymentsByUserId(Long userId) {
+        return paymentRepository.findByUserId(userId);
+    }
+
 }
