@@ -14,8 +14,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank(message = "Name is mandatory")
     private String name;
+
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is mandatory")
     private String email;
@@ -23,4 +25,8 @@ public class User {
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number should be 10 digits")
     private String phoneNumber;
     private Boolean membership;
+
+    @Lob
+    @NotBlank(message = "Image is mandatory")
+    private byte[] image;
 }
