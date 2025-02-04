@@ -70,4 +70,38 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Update user-----------------------------------------------------------------------------------------------
+
+
+    @PutMapping(value = "/customers/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<User> updateUser(@PathVariable Long id,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("email") String email,
+                                           @RequestParam("phoneNumber") String phoneNumber,
+                                           @RequestParam("membership") Boolean membership,
+                                           @RequestParam("image") MultipartFile image) throws IOException {
+
+        String contentType = image.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        long maxSize = 2 * 1024 * 1024; // 2MB
+        if (image.getSize() > maxSize) {
+            ResponseEntity.badRequest();
+            throw new ImageSizeException("Image size should be less than 2MB");
+        }
+
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setMembership(membership);
+        user.setImage(image.getBytes());
+
+        return userService.updateUser(id, user)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }

@@ -4,6 +4,7 @@ import com.example.gym.exception.DuplicateEmailException;
 import com.example.gym.exception.DuplicatePhoneNumberException;
 import com.example.gym.model.User;
 import com.example.gym.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,4 +41,23 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> updateUser(Long id, User user) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User updatedUser = existingUser.get();
+
+            updatedUser.setName(user.getName());
+
+            updatedUser.setEmail(user.getEmail());
+
+            updatedUser.setPhoneNumber(user.getPhoneNumber());
+
+            updatedUser.setMembership(user.getMembership());
+
+            updatedUser.setImage(user.getImage());
+
+            return Optional.of(userRepository.save(updatedUser));
+        }
+        return Optional.empty();
+    }
 }

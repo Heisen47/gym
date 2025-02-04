@@ -3,6 +3,7 @@ package com.example.gym.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
@@ -24,9 +25,11 @@ public class User {
 
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number should be 10 digits")
     private String phoneNumber;
+
+    @NotNull
     private Boolean membership;
 
     @Lob
-    @NotBlank(message = "Image is mandatory")
+    @NotNull
     private byte[] image;
 }
