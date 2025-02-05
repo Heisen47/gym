@@ -70,7 +70,7 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Update user-----------------------------------------------------------------------------------------------
+    // Update user Details-----------------------------------------------------------------------------------------------
 
 
     @PutMapping(value = "/customers/{id}", consumes = {"multipart/form-data"})
@@ -78,8 +78,25 @@ public class UserController {
                                            @RequestParam("name") String name,
                                            @RequestParam("email") String email,
                                            @RequestParam("phoneNumber") String phoneNumber,
-                                           @RequestParam("membership") Boolean membership,
-                                           @RequestParam("image") MultipartFile image) throws IOException {
+                                           @RequestParam("membership") Boolean membership) throws IOException {
+
+
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setMembership(membership);
+
+
+        return userService.updateUser(id, user)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // method to handle image updates -----------------------------------------------------------------------------------
+    @PutMapping(value = "/customers/{id}/image", consumes = {"multipart/form-data"})
+    public ResponseEntity<User> updateUserImage(@PathVariable Long id,
+                                                @RequestParam("image") MultipartFile image) throws IOException {
 
         String contentType = image.getContentType();
         if (contentType == null || !contentType.startsWith("image/")) {
@@ -92,14 +109,7 @@ public class UserController {
             throw new ImageSizeException("Image size should be less than 2MB");
         }
 
-        User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPhoneNumber(phoneNumber);
-        user.setMembership(membership);
-        user.setImage(image.getBytes());
-
-        return userService.updateUser(id, user)
+        return userService.updateUserImage(id, image.getBytes())
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

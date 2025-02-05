@@ -54,8 +54,18 @@ public class UserService {
 
             updatedUser.setMembership(user.getMembership());
 
-            updatedUser.setImage(user.getImage());
 
+            return Optional.of(userRepository.save(updatedUser));
+        }
+        return Optional.empty();
+    }
+
+    // Add this method to handle image updates
+    public Optional<User> updateUserImage(Long id, byte[] image) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User updatedUser = existingUser.get();
+            updatedUser.setImage(image);
             return Optional.of(userRepository.save(updatedUser));
         }
         return Optional.empty();
