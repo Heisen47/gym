@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,10 @@ public class UserService {
         Optional<User> existingPhoneNumber = userRepository.findByPhoneNumber(user.getPhoneNumber());
         Optional<User> existingEmail = userRepository.findByEmail(user.getEmail());
 
+        if (user.getDateOfJoining() == null) {
+            user.setDateOfJoining(ZonedDateTime.now(ZoneId.of("Asia/Kolkata")));
+        }
+
         if (existingEmail.isPresent()) {
             throw new DuplicateEmailException("Email already exists");
         }
@@ -39,6 +45,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    //method to get a single user -----------------------------------------------------------
     public Optional<User> getSingleUser(Long id) {
         return userRepository.findById(id);
     }

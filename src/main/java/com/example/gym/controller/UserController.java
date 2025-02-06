@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -38,6 +39,7 @@ public class UserController {
                                          @RequestParam("email") String email,
                                          @RequestParam("phoneNumber") String phoneNumber,
                                          @RequestParam("membership") Boolean membership,
+                                         @RequestParam("dateOfJoining") ZonedDateTime dateOfJoining,
                                          @RequestParam("image") MultipartFile image) throws IOException {
 
         String contentType = image.getContentType();
@@ -58,7 +60,7 @@ public class UserController {
         user.setMembership(membership);
         user.setImage(image.getBytes());
         user.setActive(true);
-        user.setRowVersion();
+//        user.setRowVersion();
 
         User newUser = userService.addUser(user);
         return ResponseEntity.ok(newUser);

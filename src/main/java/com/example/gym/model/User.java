@@ -41,7 +41,7 @@ public class User {
     private Boolean active;
 
     @Column(name = "date_of_joining", columnDefinition = "TIMESTAMP")
-    private Date dateOfJoining;
+    private ZonedDateTime dateOfJoining;
 
     @Column(name = "row_version", columnDefinition = "TIMESTAMP")
     private ZonedDateTime rowVersion;
