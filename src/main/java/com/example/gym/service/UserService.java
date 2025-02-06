@@ -20,10 +20,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    //method to get all users -----------------------------------------------------------
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    //method to add a new user -----------------------------------------------------------
     public User addUser(User user) {
         Optional<User> existingPhoneNumber = userRepository.findByPhoneNumber(user.getPhoneNumber());
         Optional<User> existingEmail = userRepository.findByEmail(user.getEmail());
@@ -41,6 +43,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    //method to update a user details -----------------------------------------------------------
     public Optional<User> updateUser(Long id, User user) {
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
@@ -60,7 +63,7 @@ public class UserService {
         return Optional.empty();
     }
 
-    // Add this method to handle image updates
+    // method to handle image updates -----------------------------------------------------------
     public Optional<User> updateUserImage(Long id, byte[] image) {
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
@@ -69,5 +72,14 @@ public class UserService {
             return Optional.of(userRepository.save(updatedUser));
         }
         return Optional.empty();
+    }
+
+    public boolean deleteUser(Long id) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

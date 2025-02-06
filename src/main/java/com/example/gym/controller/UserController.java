@@ -5,6 +5,7 @@ import com.example.gym.model.User;
 import com.example.gym.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -112,6 +113,17 @@ public class UserController {
         return userService.updateUserImage(id, image.getBytes())
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Delete user-----------------------------------------------------------------------------------------------
+    @DeleteMapping("/customers/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        boolean isDeleted = userService.deleteUser(id);
+        if (isDeleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
