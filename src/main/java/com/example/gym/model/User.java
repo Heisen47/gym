@@ -7,6 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+
 
 @Entity
 @Data
@@ -32,4 +36,19 @@ public class User {
     @Lob
     @NotNull
     private byte[] image;
+
+    @Column(name = "Status")
+    private Boolean active;
+
+    @Column(name = "date_of_joining", columnDefinition = "TIMESTAMP")
+    private Date dateOfJoining;
+
+    @Column(name = "row_version", columnDefinition = "TIMESTAMP")
+    private ZonedDateTime rowVersion;
+
+    @PrePersist
+    @PreUpdate
+    public void setRowVersion() {
+        this.rowVersion = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+    }
 }

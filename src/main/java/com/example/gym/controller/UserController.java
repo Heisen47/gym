@@ -57,6 +57,8 @@ public class UserController {
         user.setPhoneNumber(phoneNumber);
         user.setMembership(membership);
         user.setImage(image.getBytes());
+        user.setActive(true);
+        user.setRowVersion();
 
         User newUser = userService.addUser(user);
         return ResponseEntity.ok(newUser);
@@ -72,8 +74,6 @@ public class UserController {
     }
 
     // Update user Details-----------------------------------------------------------------------------------------------
-
-
     @PutMapping(value = "/customers/{id}", consumes = {"multipart/form-data"})
     public ResponseEntity<User> updateUser(@PathVariable Long id,
                                            @RequestParam("name") String name,

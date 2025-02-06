@@ -74,6 +74,7 @@ public class UserService {
         return Optional.empty();
     }
 
+    //method to delete a user -----------------------------------------------------------
     public boolean deleteUser(Long id) {
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
