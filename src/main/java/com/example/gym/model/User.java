@@ -40,6 +40,8 @@ public class User {
     @Column(name = "Status")
     private Boolean active;
 
+    
+    @NotNull
     @Column(name = "date_of_joining", columnDefinition = "TIMESTAMP")
     private ZonedDateTime dateOfJoining;
 

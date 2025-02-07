@@ -81,11 +81,14 @@ public class UserService {
         return Optional.empty();
     }
 
-    //method to delete a user -----------------------------------------------------------
-    public boolean deleteUser(Long id) {
+    //method to deactivate a user -----------------------------------------------------------
+
+    public boolean deactivateUser(Long id) {
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
-            userRepository.deleteById(id);
+            User user = existingUser.get();
+            user.setActive(false);
+            userRepository.save(user);
             return true;
         }
         return false;
