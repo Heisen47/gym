@@ -60,7 +60,6 @@ public class UserController {
         user.setMembership(membership);
         user.setImage(image.getBytes());
         user.setActive(true);
-//        user.setRowVersion();
 
         User newUser = userService.addUser(user);
         return ResponseEntity.ok(newUser);
@@ -118,9 +117,9 @@ public class UserController {
     }
 
     // Delete user-----------------------------------------------------------------------------------------------
-    @DeleteMapping("/customers/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-        boolean isDeleted = userService.deleteUser(id);
+    @PutMapping("/customers/{id}/delete")
+    public ResponseEntity<User> deactivateUser(@PathVariable Long id){
+        boolean isDeleted = userService.deactivateUser(id);
         if (isDeleted) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {

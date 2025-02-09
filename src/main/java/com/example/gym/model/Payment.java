@@ -25,8 +25,8 @@ public class Payment {
     @Column(nullable = false)
     private String paymentMethod;
 
-    @Column(name = "Days_of_membership", nullable = false)
-    private String validity;
+    @Column(name = "expiry_date", nullable = false)
+    private ZonedDateTime validity;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

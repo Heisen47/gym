@@ -11,9 +11,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +40,7 @@ public class UserControllerTest {
         User user = new User();
         when(userService.addUser(user)).thenReturn(user);
 
-        ResponseEntity<User> response = userController.addUser("John", "john@example.com", "1234567890", true, image);
+        ResponseEntity<User> response = userController.addUser("John", "john@example.com", "1234567890", true, ZonedDateTime.now(), image);
 
         assertEquals(ResponseEntity.ok(user), response);
     }
@@ -48,7 +50,7 @@ public class UserControllerTest {
         MockMultipartFile image = new MockMultipartFile("image", "image.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[3 * 1024 * 1024]);
 
         assertThrows(ImageSizeException.class, () -> {
-            userController.addUser("John", "john@example.com", "1234567890", true, image);
+            userController.addUser("John", "john@example.com", "1234567890", true, ZonedDateTime.now(), image);
         });
     }
 
@@ -56,7 +58,7 @@ public class UserControllerTest {
     void addUser_returnsBadRequestWhenImageNotValid() throws IOException {
         MockMultipartFile image = new MockMultipartFile("image", "image.txt", MediaType.TEXT_PLAIN_VALUE, new byte[1024]);
 
-        ResponseEntity<User> response = userController.addUser("John", "john@example.com", "1234567890", true, image);
+        ResponseEntity<User> response = userController.addUser("John", "john@example.com", "1234567890", true, ZonedDateTime.now(), image);
 
         assertEquals(ResponseEntity.badRequest().body(null), response);
     }
@@ -78,5 +80,43 @@ public class UserControllerTest {
         ResponseEntity<User> response = userController.getSingleUser(1L);
 
         assertEquals(ResponseEntity.notFound().build(), response);
+    }
+
+    @Test
+    void updateUserImage_returnsUserWhenValid() throws IOException {
+        MockMultipartFile image = new MockMultipartFile("image", "image.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[1024]);
+        User user = new User();
+        when(userService.updateUserImage(1L, image.getBytes())).thenReturn(Optional.of(user));
+
+        ResponseEntity<User> response = userController.updateUserImage(1L, image);
+
+        assertEquals(ResponseEntity.ok(user), response);
+    }
+
+    @Test
+    void updateUserImage_throwsExceptionWhenImageTooLarge() {
+        MockMultipartFile image = new MockMultipartFile("image", "image.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[3 * 1024 * 1024]);
+
+        assertThrows(ImageSizeException.class, () -> {
+            userController.updateUserImage(1L, image);
+        });
+    }
+
+    @Test
+    void updateUserImage_returnsBadRequestWhenImageNotValid() throws IOException {
+        MockMultipartFile image = new MockMultipartFile("image", "image.txt", MediaType.TEXT_PLAIN_VALUE, new byte[1024]);
+
+        ResponseEntity<User> response = userController.updateUserImage(1L, image);
+
+        assertEquals(ResponseEntity.badRequest().body(null), response);
+    }
+
+    @Test
+    void deactivateUser_returnsNoContentWhenUserDeactivated() {
+        when(userService.deactivateUser(1L)).thenReturn(true);
+
+        ResponseEntity<User> response = userController.deactivateUser(1L);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 }
