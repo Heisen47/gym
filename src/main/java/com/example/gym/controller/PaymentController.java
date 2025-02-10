@@ -4,10 +4,7 @@ import com.example.gym.model.Payment;
 import com.example.gym.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +28,12 @@ public class PaymentController {
     public ResponseEntity<List<Payment>> getPaymentsByUserId(@PathVariable Long userId){
         List<Payment> payments = paymentService.getPaymentsByUserId(userId);
         return ResponseEntity.ok(payments);
+    }
+
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<Payment> updatePayment(@PathVariable Long userId, @RequestBody Payment payment){
+        Payment updatedPayment = paymentService.updatePayment(userId, payment);
+        return ResponseEntity.ok(updatedPayment);
     }
 
 }
