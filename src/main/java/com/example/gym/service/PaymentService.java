@@ -24,4 +24,13 @@ public class PaymentService {
         return paymentRepository.findByUserId(userId);
     }
 
+    public Payment updatePayment(Long userId, Payment payment) {
+        List<Payment> payments = paymentRepository.findByUserId(userId);
+        for (Payment p : payments) {
+            if (p.getPaymentId().equals(payment.getPaymentId())) {
+                return paymentRepository.save(payment);
+            }
+        }
+        return null;
+    }
 }
