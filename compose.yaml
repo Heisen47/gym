@@ -1,36 +1,36 @@
 services:
-    mysql-db:
-      image: mysql:8.0
-      container_name: mysql-db
-      restart: always
-      environment:
-        MYSQL_DATABASE: gym_management
-        MYSQL_USER: springuser
-        MYSQL_PASSWORD: springuser
-        MYSQL_ROOT_PASSWORD: test1
-      ports:
-        - 3307:3306
-      volumes:
-        - db-data:/var/lib/mysql
-      healthcheck:
-        test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-        interval: 5s
-        timeout: 10s
-        retries: 5
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: gym_management
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: springuser
+      MYSQL_ROOT_PASSWORD: Jeet@mysql21
+    ports:
+      - 3307:3306
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
 
-    server:
-      build:
-        context: .
-        dockerfile: Dockerfile
-      ports:
-        - 80:8080
-      depends_on:
-        mysql-db:
-          condition: service_healthy
-      environment:
-        SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/gym_management
-        SPRING_DATASOURCE_USERNAME: springuser
-        SPRING_DATASOURCE_PASSWORD: springuser
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:8080
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/gym_management
+      SPRING_DATASOURCE_USERNAME: springuser
+      SPRING_DATASOURCE_PASSWORD: springuser
 
 
 volumes:
