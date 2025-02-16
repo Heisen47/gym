@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @RestController
 public class homepage {
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public  ResponseEntity<String> homeController(){
         return new ResponseEntity<>("hello world", HttpStatus.OK);
     }

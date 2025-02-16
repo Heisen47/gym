@@ -14,6 +14,7 @@ import java.time.ZonedDateTime;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Payment_ID")
     private Long PaymentId;
 
     @Column(nullable = false)
