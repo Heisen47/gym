@@ -19,14 +19,14 @@ public class Invoice {
     @Column(nullable = false)
     private String InvoiceAmount;
 
-    @Column(nullable = false)
-    private String PaymentMethod;
-
-    @Column(name = "expiry_date", nullable = false)
-    private ZonedDateTime validity;
+    @Column
+    private String InvoicedBy;
 
     @OneToOne
     private Payment payment;
+
+    @ManyToOne
+    private User user;
 
     @PrePersist
     public void prePersist() {
