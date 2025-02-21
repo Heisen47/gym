@@ -1,9 +1,9 @@
 package com.example.gym.model;
 
-import com.example.gym.util.CustomIdGenerator;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -11,6 +11,7 @@ import java.time.ZonedDateTime;
 @Table(name = "Invoice")
 public class Invoice {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long InvoiceId;
 
     @Column(nullable = false)
@@ -28,10 +29,11 @@ public class Invoice {
     @ManyToOne
     private User user;
 
+    @Column
+    private ZonedDateTime rowversion;
+
     @PrePersist
     public void prePersist() {
-        if (this.InvoiceId == null) {
-            this.InvoiceId = CustomIdGenerator.generateId();
-        }
+        this.rowversion = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
     }
 }
