@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZonedDateTime;
 
 @RestController
-@RequestMapping("/invoice")
+@RequestMapping("/admin")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
@@ -26,7 +26,7 @@ public class InvoiceController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/")
+    @PostMapping("/invoice")
     public ResponseEntity<Invoice> createInvoice(@RequestBody InvoiceRequest request) {
         Invoice invoice = new Invoice();
         invoice.setInvoiceDate(ZonedDateTime.now());
