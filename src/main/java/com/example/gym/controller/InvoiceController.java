@@ -32,6 +32,7 @@ public class InvoiceController {
         invoice.setInvoiceDate(ZonedDateTime.now());
         invoice.setInvoiceAmount(request.getInvoiceAmount());
         invoice.setInvoicedBy(request.getInvoicedBy());
+        invoice.setProduct(request.getProduct());
 
         userService.getSingleUser(request.getUserId()).ifPresent(invoice::setUser);
         paymentService.getLatestPaymentForUser(request.getUserId()).ifPresent(invoice::setPayment);
