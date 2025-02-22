@@ -10,6 +10,6 @@ public class homepage {
 
     @GetMapping("/")
     public  ResponseEntity<String> homeController(){
-        return new ResponseEntity<>("hello world", HttpStatus.OK);
+        return new ResponseEntity<>("We are running! \uD83C\uDFC3", HttpStatus.OK);
     }
 }

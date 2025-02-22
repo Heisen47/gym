@@ -7,4 +7,5 @@ public class InvoiceRequest {
     private String invoiceAmount;
     private String invoicedBy;
     private Long userId;
+    private String product;
 }

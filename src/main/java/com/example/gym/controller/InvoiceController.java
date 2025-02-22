@@ -6,13 +6,15 @@ import com.example.gym.service.InvoiceService;
 import com.example.gym.service.PaymentService;
 import com.example.gym.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 
 @RestController
-@RequestMapping("/invoice")
+@RequestMapping("/admin")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
@@ -26,12 +28,13 @@ public class InvoiceController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/")
+    @PostMapping("/invoice")
     public ResponseEntity<Invoice> createInvoice(@RequestBody InvoiceRequest request) {
         Invoice invoice = new Invoice();
         invoice.setInvoiceDate(ZonedDateTime.now());
         invoice.setInvoiceAmount(request.getInvoiceAmount());
         invoice.setInvoicedBy(request.getInvoicedBy());
+        invoice.setProduct(request.getProduct());
 
         userService.getSingleUser(request.getUserId()).ifPresent(invoice::setUser);
         paymentService.getLatestPaymentForUser(request.getUserId()).ifPresent(invoice::setPayment);
@@ -40,4 +43,9 @@ public class InvoiceController {
         return ResponseEntity.ok(savedInvoice);
     }
 
+    @GetMapping("/invoice/{userId}")
+    public ResponseEntity<Page<Invoice>> getInvoiceByUserId(@PathVariable Long userId , Pageable pageable) {
+        Page<Invoice> invoice = invoiceService.getInvoiceByUserId(userId , pageable);
+        return ResponseEntity.ok(invoice);
+    }
 }

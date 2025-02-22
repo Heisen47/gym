@@ -18,12 +18,15 @@ public class Invoice {
     private ZonedDateTime InvoiceDate;
 
     @Column(nullable = false)
+    private String product;
+
+    @Column(nullable = false)
     private String InvoiceAmount;
 
     @Column
     private String InvoicedBy;
 
-    @OneToOne
+    @ManyToOne
     private Payment payment;
 
     @ManyToOne

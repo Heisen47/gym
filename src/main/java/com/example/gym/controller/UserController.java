@@ -15,6 +15,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
+@RequestMapping("/admin")
 public class UserController {
 
     private final UserService userService;
