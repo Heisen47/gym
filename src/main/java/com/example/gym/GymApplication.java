@@ -10,7 +10,7 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 public class GymApplication {
-	private static final Logger logger = LogManager.getLogger(GymApplication.class);
+//	private static final Logger logger = LogManager.getLogger(GymApplication.class);
 
 	@PostConstruct
 	public void init() {
@@ -19,7 +19,7 @@ public class GymApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GymApplication.class, args);
-		logger.info("Application started successfully.");
+//		logger.info("Application started successfully.");
 	}
 
 }

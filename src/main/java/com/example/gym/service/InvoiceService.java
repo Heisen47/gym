@@ -4,6 +4,8 @@ import com.example.gym.exception.InvalidInvoiceDataException;
 import com.example.gym.exception.UserNotFoundException;
 import com.example.gym.model.Invoice;
 import com.example.gym.repository.InvoiceRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +29,15 @@ public class InvoiceService {
             throw new UserNotFoundException("User not found for the given invoice.");
         }
 
-        Optional<Invoice> existingInvoice = invoiceRepository.findByUserId(invoice.getUser().getId());
+        Optional<Invoice> existingInvoice = invoiceRepository.findByUserId(invoice.getUser().getId() , Pageable.unpaged()).stream().findFirst();
         if (existingInvoice.isPresent()) {
             throw new InvalidInvoiceDataException("An invoice already exists for the given user.");
         }
         return invoiceRepository.save(invoice);
+    }
+
+    public Page<Invoice> getInvoiceByUserId(Long userId , Pageable pageable) {
+        return invoiceRepository.findByUserId(userId , pageable);
+//                .orElseThrow(() -> new UserNotFoundException("Invoice not found for the given user."));
     }
 }
