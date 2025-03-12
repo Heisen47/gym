@@ -1,9 +1,6 @@
 package com.example.gym.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -11,7 +8,8 @@ import lombok.Data;
 @Table(name = "Admin")
 public class Admin {
     @Id
-    private String adminId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long adminId;
 
     @Column(name = "Name")
     private String adminName;

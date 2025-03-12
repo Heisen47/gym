@@ -40,4 +40,14 @@ public class AuthController {
 
         return ResponseEntity.ok(new AuthResponse(jwt));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerAdmin(@RequestBody AuthRequest request) {
+        try {
+            adminService.registerAdmin(request.getUsername(), request.getPassword());
+            return ResponseEntity.ok("Admin registered successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Registration failed: " + e.getMessage());
+        }
+    }
 }
