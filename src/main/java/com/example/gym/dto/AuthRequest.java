@@ -1,4 +1,4 @@
-package com.example.gym.controller;
+package com.example.gym.dto;
 
 public class AuthRequest {
     private String username;

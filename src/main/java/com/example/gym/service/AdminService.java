@@ -1,5 +1,6 @@
 package com.example.gym.service;
 
+import com.example.gym.exception.AuthExceptions.AdminAlreadyExistsException;
 import com.example.gym.model.Admin;
 import com.example.gym.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,15 @@ public class AdminService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerAdmin(String username, String password) {
+    public void registerAdmin(String email, String password, String mobile, String name) {
+        if (adminRepository.findByAdminEmail(email) != null) {
+            throw new AdminAlreadyExistsException("Admin with email " + email + " already exists");
+        }
         Admin admin = new Admin();
-        admin.setAdminName(username);
+        admin.setAdminEmail(email);
         admin.setAdminPassword(passwordEncoder.encode(password));
+        admin.setAdminMobile(mobile);
+        admin.setAdminName(name);
         adminRepository.save(admin);
     }
 
