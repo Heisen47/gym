@@ -51,4 +51,8 @@ public class AdminService implements UserDetailsService {
     public boolean authenticateAdmin(String adminEmail, String adminPassword) {
         return adminRepository.findByAdminEmailAndAdminPassword(adminEmail, adminPassword) != null;
     }
+
+    public Admin findByAdminEmail(String username) {
+        return adminRepository.findByAdminEmail(username);
+    }
 }

@@ -6,12 +6,16 @@ import com.example.gym.model.User;
 import com.example.gym.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -82,7 +86,6 @@ public class UserService {
     }
 
     //method to deactivate a user -----------------------------------------------------------
-
     public boolean deactivateUser(Long id) {
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
@@ -92,5 +95,15 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    //method to activate a user -----------------------------------------------------------
+    public User createAdmin(User user) {
+        // Add ADMIN role to user authorities
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        user.setAuthorities(authorities);
+
+        return userRepository.save(user);
     }
 }

@@ -5,6 +5,7 @@ import com.example.gym.dto.AuthRequest;
 import com.example.gym.dto.AuthResponse;
 import com.example.gym.exception.AuthExceptions.AdminAlreadyExistsException;
 import com.example.gym.exception.AuthExceptions.InvalidCredentialsException;
+import com.example.gym.model.Admin;
 import com.example.gym.service.AdminService;
 import com.example.gym.util.JwtUtil;
 import com.example.gym.dto.ErrorResponse;
@@ -39,7 +40,8 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
             );
             final UserDetails userDetails = adminService.loadUserByUsername(authRequest.getUsername());
-            final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+            Admin admin = adminService.findByAdminEmail(authRequest.getUsername());
+            final String jwt = jwtUtil.generateToken(userDetails.getUsername(), admin.getAdminName());
 
             return ResponseEntity.ok(new AuthResponse(jwt));
 
