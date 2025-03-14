@@ -5,6 +5,7 @@ import com.example.gym.dto.AuthRequest;
 import com.example.gym.dto.AuthResponse;
 import com.example.gym.exception.AuthExceptions.AdminAlreadyExistsException;
 import com.example.gym.exception.AuthExceptions.InvalidCredentialsException;
+import com.example.gym.model.Admin;
 import com.example.gym.service.AdminService;
 import com.example.gym.util.JwtUtil;
 import com.example.gym.dto.ErrorResponse;
@@ -14,8 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -39,9 +45,14 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
             );
             final UserDetails userDetails = adminService.loadUserByUsername(authRequest.getUsername());
-            final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+            Admin admin = adminService.findByAdminEmail(authRequest.getUsername());
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+            final String jwt = jwtUtil.generateToken(userDetails.getUsername(), admin.getAdminName() , roles);
+            final Date expiryDate = jwtUtil.getExpirationDateFromToken(jwt);
 
-            return ResponseEntity.ok(new AuthResponse(jwt));
+            return ResponseEntity.ok(new AuthResponse(jwt , expiryDate , roles));
 
         } catch (AuthenticationException e) {
             throw new InvalidCredentialsException("Invalid username or password");

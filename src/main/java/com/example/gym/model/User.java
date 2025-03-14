@@ -6,10 +6,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -52,5 +57,22 @@ public class User {
     @PreUpdate
     public void setRowVersion() {
         this.rowVersion = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+    }
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "authority")
+    private Set<String> authorities = new HashSet<>();
+
+    public void setAuthorities(Set<GrantedAuthority> authorities) {
+        this.authorities = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<GrantedAuthority> getAuthorities() {
+        return authorities.stream()
+                .map(authority -> new SimpleGrantedAuthority(authority))
+                .collect(Collectors.toSet());
     }
 }
