@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -38,7 +37,7 @@ public class AuthController {
         this.adminService = adminService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authRequest) throws Exception {
         try {
             authenticationManager.authenticate(
@@ -59,7 +58,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping("/admin/register")
     public ResponseEntity<?> registerAdmin(@RequestBody AdminRegistrationRequest request) {
         if (request.getEmail() == null || request.getPassword() == null ||
                 request.getMobile() == null || request.getName() == null) {
