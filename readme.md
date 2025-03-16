@@ -2,6 +2,16 @@
 
 This project is a Gym Management System built using Java and Spring Boot. It allows users to manage gym memberships, including user registration with unique phone numbers and email addresses, and invoice management.
 
+# Running locally 
+
+To run it locally just pull it from docker hub in the CLI-> 
+
+   ```sh
+  docker pull iamrishi47/gym-app
+   ```
+
+Link to docker hub - https://hub.docker.com/r/iamrishi47/gym-app
+
 ## Features
 
 - User registration with validation for unique phone numbers and email addresses.
