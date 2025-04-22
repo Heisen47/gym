@@ -39,4 +39,5 @@ public class Invoice {
     public void prePersist() {
         this.rowversion = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
     }
+
 }

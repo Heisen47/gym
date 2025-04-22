@@ -10,7 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.ZonedDateTime;
 
 @RestController
@@ -22,7 +24,7 @@ public class InvoiceController {
     private final PaymentService paymentService;
 
     @Autowired
-    public InvoiceController(InvoiceService invoiceService, UserService userService , PaymentService paymentService) {
+    public InvoiceController(InvoiceService invoiceService, UserService userService, PaymentService paymentService) {
         this.invoiceService = invoiceService;
         this.userService = userService;
         this.paymentService = paymentService;
@@ -40,12 +42,16 @@ public class InvoiceController {
         paymentService.getLatestPaymentForUser(request.getUserId()).ifPresent(invoice::setPayment);
 
         Invoice savedInvoice = invoiceService.saveInvoice(invoice);
-        return ResponseEntity.ok(savedInvoice);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedInvoice.getInvoiceId())
+                .toUri();
+        return ResponseEntity.created(location).body(savedInvoice);
     }
 
     @GetMapping("/invoice/{userId}")
-    public ResponseEntity<Page<Invoice>> getInvoiceByUserId(@PathVariable Long userId , Pageable pageable) {
-        Page<Invoice> invoice = invoiceService.getInvoiceByUserId(userId , pageable);
+    public ResponseEntity<Page<Invoice>> getInvoiceByUserId(@PathVariable Long userId, Pageable pageable) {
+        Page<Invoice> invoice = invoiceService.getInvoiceByUserId(userId, pageable);
         return ResponseEntity.ok(invoice);
     }
 }
