@@ -68,6 +68,11 @@ Link to docker hub - https://hub.docker.com/r/iamrishi47/gym-app
 
 ## API Endpoints
 
+## You can also find the API details by accessing the below swagger page
+```sh
+http://localhost:8080/swagger-ui/index.html
+```
+
 ### Authentication
 
 #### Login
